@@ -1,0 +1,13 @@
+hitormiss
+import cv2
+import numpy as np
+image = np.array([[0, 1, 0],
+                  [1, 1, 1],
+                  [0, 1, 0]], dtype=np.uint8)
+image = image * 255
+kernel = np.array([[0, 1, 0],
+                   [1, 1, 1],
+                   [0, 1, 0]], dtype=np.int8)
+hitormiss = cv2.morphologyEx(image, cv2.MORPH_HITMISS, kernel)
+hitormiss_binary = (hitormiss > 0).astype(np.uint8)
+print("Hit-or-Miss Result:\n", hitormiss_binary)
