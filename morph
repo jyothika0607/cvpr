@@ -1,0 +1,23 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+# Load the image
+image = cv2.imread('image.jpg') # BGR format by default
+# Define kernel for morphological operations
+kernel = np.ones((5, 5), np.uint8)
+# Apply morphological operations directly
+dilated_image = cv2.dilate(image, kernel, iterations=1)
+eroded_image = cv2.erode(image, kernel, iterations=1)
+opened_image = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
+closed_image = cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel)
+# Convert images to RGB for displaying with matplotlib
+images = [image, dilated_image, eroded_image, opened_image, closed_image]
+titles = ['Original Image', 'Dilation', 'Erosion', 'Opening', 'Closing']
+# Plot the images
+plt.figure(figsize=(20, 10))
+for i, (img, title) in enumerate(zip(images, titles)):
+    plt.subplot(2, 3, i+1)
+    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)) # Convert to RGB
+    plt.title(title)
+    plt.axis('off')
+    plt.show()
