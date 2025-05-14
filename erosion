@@ -1,0 +1,37 @@
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
+
+# Read the image
+img = cv2.imread("shiva.png")
+
+# Convert BGR to RGB for displaying with matplotlib
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+# Define the kernel
+kernel = np.ones((5, 5), np.uint8)
+
+# Apply morphological operations
+dil = cv2.dilate(img, kernel, iterations=1)
+er = cv2.erode(img, kernel, iterations=1)
+open_ = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+close = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+
+# Convert results to RGB for displaying
+dil_rgb = cv2.cvtColor(dil, cv2.COLOR_BGR2RGB)
+er_rgb = cv2.cvtColor(er, cv2.COLOR_BGR2RGB)
+open_rgb = cv2.cvtColor(open_, cv2.COLOR_BGR2RGB)
+close_rgb = cv2.cvtColor(close, cv2.COLOR_BGR2RGB)
+
+# Plot the images
+titles = ['Original', 'Dilation', 'Erosion', 'Opening', 'Closing']
+images = [img_rgb, dil_rgb, er_rgb, open_rgb, close_rgb]
+
+plt.figure(figsize=(15, 6))
+for i in range(5):
+    plt.subplot(1, 5, i + 1)
+    plt.imshow(images[i])
+    plt.title(titles[i])
+    plt.axis('off')
+plt.tight_layout()
+plt.show()
