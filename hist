@@ -1,37 +1,47 @@
 import cv2
+import numpy as np
 import matplotlib.pyplot as plt
-from skimage.exposure import match_histograms
 
-# Load the images
-source = cv2.imread('dog.jpg')  # Change filename if needed
-reference = cv2.imread('dog1.jpg')  # Change filename if needed
+# Load the image in grayscale
+image = cv2.imread("mango.jpeg", cv2.IMREAD_GRAYSCALE)
 
-# Check if images loaded
-if source is None or reference is None:
-    print("Error loading images!")
-    exit()
+# Check if image is loaded correctly 
+if image is None:
+    print("Error: Image not found or cannot be loaded.") 
+else:
+    # 1. Calculate and plot histogram
+    def calculate_histogram(image, title="Histogram"):
+        histogram = cv2.calcHist([image], [0], None, [256], [0, 256])
+        plt.figure(figsize=(8, 6)) 
+        plt.plot(histogram, color='black') 
+        plt.title(title)
+        plt.xlabel("Pixel Intensity") 
+        plt.ylabel("Frequency") 
+        plt.xlim([0, 256])
+        plt.grid() 
+        plt.show()
 
-# Perform histogram matching
-matched = match_histograms(source, reference, multichannel=True)
+    # 2. Histogram Equalization
+    def histogram_equalization(image): 
+        return cv2.equalizeHist(image)
 
-# Convert images from BGR to RGB for displaying
-source_rgb = cv2.cvtColor(source, cv2.COLOR_BGR2RGB)
-reference_rgb = cv2.cvtColor(reference, cv2.COLOR_BGR2RGB)
-matched_rgb = cv2.cvtColor(matched, cv2.COLOR_BGR2RGB)
+    # Apply histogram equalization
+    equalized_image = histogram_equalization(image)
 
-# Display the images
-titles = ['Source Image', 'Reference Image', 'Matched Image']
-images = [source_rgb, reference_rgb, matched_rgb]
+    # Display original and equalized images 
+    titles = ['Original', 'Histogram Equalized'] 
+    images = [image, equalized_image]
 
-plt.figure(figsize=(15, 5))
-for i in range(3):
-    plt.subplot(1, 3, i + 1)
-    plt.imshow(images[i])
-    plt.title(titles[i])
-    plt.axis('off')
+    plt.figure(figsize=(10, 6)) 
+    for i in range(len(images)):
+        plt.subplot(1, 2, i + 1) 
+        plt.imshow(images[i], cmap='gray') 
+        plt.title(titles[i])
+        plt.axis('off')
 
-plt.tight_layout()
-plt.show()
+    plt.tight_layout() 
+    plt.show()
 
-# Save the matched image
-cv2.imwrite('matched_image.jpg', matched)
+    # Plot histogram of original and equalized images 
+    calculate_histogram(image, "Original Image Histogram") 
+    calculate_histogram(equalized_image, "Equalized Image Histogram")
