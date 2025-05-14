@@ -1,1 +1,85 @@
+image negative
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Read the image
+image = cv2.imread('image.jpg')  # Change filename as needed
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB for matplotlib
+
+# Create negative image
+negative_image = 255 - image
+
+# Show the images
+plt.figure(figsize=(10, 5))
+plt.subplot(1, 2, 1)
+plt.title('Original Image')
+plt.imshow(image)
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title('Negative Image')
+plt.imshow(negative_image)
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+log
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Read image in grayscale
+image = cv2.imread('image.jpg', cv2.IMREAD_GRAYSCALE)
+
+# Convert image to float
+image_float = image.astype(np.float32)
+
+# Apply log transform
+c = 255 / np.log(1 + np.max(image_float))
+log_transformed = c * np.log(1 + image_float)
+
+# Clip and convert back to uint8
+log_transformed = np.clip(log_transformed, 0, 255).astype(np.uint8)
+
+# Display original and transformed images
+plt.figure(figsize=(10, 5))
+plt.subplot(1, 2, 1)
+plt.title('Original Image')
+plt.imshow(image, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title('Log Transformed Image')
+plt.imshow(log_transformed, cmap='gray')
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
+gamma
+
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+image = cv2.imread('image.jpg', cv2.IMREAD_GRAYSCALE)
+image_float = image.astype(np.float32)
+gamma = 2.0
+c = 255 / (255 ** gamma)
+gamma_transformed = c * (image_float ** gamma)
+gamma_transformed = np.clip(gamma_transformed, 0, 255).astype(np.uint8)
+plt.figure(figsize=(10, 5))
+plt.subplot(1, 2, 1)
+plt.title('Original Image')
+plt.imshow(image, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title(f'Gamma Transformed (γ={gamma})')
+plt.imshow(gamma_transformed, cmap='gray')
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
 
